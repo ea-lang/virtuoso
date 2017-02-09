@@ -17,7 +17,7 @@ class Piece(db.Model):
 
 	def __repr__(self):
 
-		return "<Piece piece_id=%d title=%s composer=%s key=%d>" % (self.piece_id, self.title, self.composer, self.key) 
+		return "<Piece piece_id=%d title=%s composer=%s>" % (self.piece_id, self.title, self.composer) 
 
 ######################################################################################
 

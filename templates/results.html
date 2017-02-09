@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+
+{% for result in results %}
+#{{ result[0] }} <strong>{{ result[1] }}</strong> 
+<ul>
+	<li>Composer: {{ result[2] }}</li> 
+	<li>Period: {{ result[3] }}</li>
+	<li>Level: {{ result[4] }}</li> 
+	<li>Key: {{ result[5] }}</li>
+</ul>
+{% endfor %}
+
+{% endblock %}
