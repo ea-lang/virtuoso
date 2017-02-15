@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+<h1>SIMILAR PIECES</h1>
+
+Your piece:<br><br>
+#{{ piece.piece_id }} <strong>{{ piece.title }}</strong> 
+<ul>
+	<li>Composer: {{ piece.composer }}</li> 
+	<li>Period: {{ piece.period }}</li>
+	<li>Level: {{ piece.level }}</li> 
+	<li>Key: {{ piece.key }}</li>
+</ul>
+
+Similar pieces by filters:<br>
+{% for filter in filters %} {{ filter }}<br> {% endfor %}<br><br>
+
+{% for result in results %}
+#{{ result[0] }} <strong>{{ result[1] }}</strong> 
+<ul>
+	<li>Composer: {{ result[2] }}</li> 
+	<li>Period: {{ result[3] }}</li>
+	<li>Level: {{ result[4] }}</li> 
+	<li>Key: {{ result[5] }}</li>
+</ul>
+{% endfor %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Homepage
+
+{% endblock %}
+
+{% block content %}
+<h1>FIND SIMILAR PIECES</h1>
+Select a piece by {{ composer }}.<br>
+
+<form action="/suggestion-results"> 
+	Pieces: <select name="piece">
+				{% for piece in pieces %}
+		 		<option value={{ piece[0] }}>
+		 		{{ piece[1] }} </option>
+		 		{% endfor %}
+	 	  </select><br><br>
+	Find similar pieces by:<br>
+	Title <input type="text" name="title" id="title"><br>
+	Composer<input type="checkbox" name="composer" value="true"><br>
+	Period<input type="checkbox" name="period" value="true"><br>
+	Level<input type="checkbox" name="level" value="true"><br>
+	Key<input type="checkbox" name="key" value="true"><br>
+
+<input type="submit">
+
+</form>
+
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+{% endblock %}

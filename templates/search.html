@@ -3,34 +3,45 @@
 
 {% block content %}
 
- <h1>Pieces</h1>
+ <h1>SEARCH</h1>
  <form action="/results"> 
  	Title: <input type="text" name="title"><br>
  	Composer: <select name="composer">
  				<option selected></option> 
  				{% for composer in composers %}
  		 		<option value={{ composer[0] }}>
- 		 		{{ composer[0] }} </option>
+ 		 		{{ composer[0] }} 
+ 		 		({{ composer[1] }} pieces)
+ 		 		</option>
  		 		{% endfor %}
 		 	  </select><br>
  	Period: <select name="period">
  				<option selected></option> 
  				{% for period in periods %}
  		 		<option value={{ period[0] }}>
- 		 		{{ period[0] }} </option>
- 		 		{% endfor %}</select><br>
+ 		 		{{ period[0] }} 
+ 		 		({{ period[1] }} pieces)
+ 		 		</option>
+ 		 		{% endfor %}
+ 		 		</select><br>
  	Level: <select name="level">
  				<option selected></option> 
  				{% for level in levels %}
  		 		<option value={{ level[0] }}>
- 		 		{{ level[0] }} </option>
- 		 		{% endfor %}</select><br>
+ 		 		{{ level[0] }} 
+ 		 		({{ level[1] }} pieces)
+ 		 		</option>
+ 		 		{% endfor %}
+ 		 		</select><br>
  	Key: <select name="key">
  				<option selected></option> 
  				{% for key in keys %}
  		 		<option value={{ key[0] }}>
- 		 		{{ key[0] }} </option>
- 		 		{% endfor %}</select><br>
+ 		 		{{ key[0] }} 
+ 		 		({{ key[1] }} pieces)
+ 		 		</option>
+ 		 		{% endfor %}
+ 		 		</select><br>
 	<input type="submit">
  </form>
 

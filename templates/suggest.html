@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Homepage
+
+{% endblock %}
+
+{% block content %}
+<h1>FIND SIMILAR PIECES</h1>
+Select a composer.<br>
+
+<form action="/find-pieces-by-composer"> 
+	Composers: <select name="composer">
+				{% for composer in composers %}
+				<option value={{ composer[0] }}>
+		 		{{ composer[0] }} 
+		 		({{ composer[1] }} pieces)
+		 		</option>
+		 		{% endfor %}
+		 		</select><br><br>	
+<input type="submit">
+
+</form>
+
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- <script src="/static/js/eventlistener.js"></script> -->
+
+
+{% endblock %}
