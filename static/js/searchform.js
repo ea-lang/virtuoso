@@ -1,17 +1,21 @@
 function getPieces(evt) {
-	evt.preventDefault();
 	var title = $("#title").val();
 	var composer = $("#composer").val();
 	var period = $("#period").val();
 	var level = $("#level").val();
 	var key = $("#key").val();
+	var tonality = $("#tonality").val();
 
-	var url = '/results?title=' + title
-								+ '&composer=' + composer 
-								+ '&period=' + period
-								+ '&level=' + level
-								+ '&key=' + key
-	$.get(url, showPieces);
+	var data = {'title': title, 
+				'composer': composer,
+				'period': period,
+				'level': level,
+				'key': key,
+				'tonality': tonality};
+
+	var url = '/results';
+
+	$.get(url, data, showPieces);
 }
 
 
@@ -36,12 +40,20 @@ function showPieces(results) {
 			key = piece[5];
 		}
 
+		if (piece[6] === null) {
+			var tonality = 'None';
+		}
+		else {
+			tonality = piece[6];
+		}
+
 		str += '#' + piece_id + ' <strong>' + title + '</strong>'
 				+ '<ul>' 
 				+ '<li> Composer: ' + composer + '</li>'
 				+ '<li> Period: ' + period + '</li>'
 				+ '<li> Level: ' + level + '</li>'
 				+ '<li> Key: ' + key + '</li>'
+				+ '<li> Tonality: ' + tonality + '</li>'
 				+ '</ul>';
 	}
 
@@ -49,7 +61,8 @@ function showPieces(results) {
 }
 
 $('#title').keyup(getPieces)
-$('#composer').on('change', getPieces)
-$('#period').on('change', getPieces)
-$('#level').on('change', getPieces)
-$('#key').on('change', getPieces)
+$('.filter').on('change', getPieces)
+
+
+
+

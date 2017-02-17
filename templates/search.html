@@ -5,8 +5,10 @@
 
  <h1>SEARCH</h1>
  <form id="search-form" action="/results"> 
+ 	
  	Title: <input type="text" id="title" name="title"><br>
- 	Composer: <select id="composer" name="composer">
+ 	
+ 	Composer: <select id="composer" class="filter" name="composer">
  				<option selected></option> 
  				{% for composer in composers %}
  		 		<option value={{ composer[0] }}>
@@ -15,7 +17,8 @@
  		 		</option>
  		 		{% endfor %}
 		 	  </select><br>
- 	Period: <select id="period" name="period">
+ 	
+ 	Period: <select id="period" class="filter" name="period">
  				<option selected></option> 
  				{% for period in periods %}
  		 		<option value={{ period[0] }}>
@@ -24,7 +27,8 @@
  		 		</option>
  		 		{% endfor %}
  		 		</select><br>
- 	Level: <select id="level" name="level">
+ 	
+ 	Level: <select id="level" class="filter" name="level">
  				<option selected></option> 
  				{% for level in levels %}
  		 		<option value={{ level[0] }}>
@@ -33,7 +37,8 @@
  		 		</option>
  		 		{% endfor %}
  		 		</select><br>
- 	Key: <select id="key" name="key">
+ 	
+ 	Key: <select id="key" class="filter" name="key">
  				<option selected></option> 
  				{% for key in keys %}
  		 		<option value={{ key[0] }}>
@@ -42,6 +47,17 @@
  		 		</option>
  		 		{% endfor %}
  		 		</select><br>
+
+	Tonality: <select id="tonality" class="filter" name="tonality">
+ 				<option selected></option> 
+ 				{% for tonality in tonalities %}
+ 		 		<option value={{ tonality[0] }}>
+ 		 		{{ tonality[0] }} 
+ 		 		({{ tonality[1] }} pieces)
+ 		 		</option>
+ 		 		{% endfor %}
+ 		 		</select><br>
+ 		 		
  </form>
 	<br>
  <div id="results"></div>

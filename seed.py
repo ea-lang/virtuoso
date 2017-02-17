@@ -31,6 +31,7 @@ def process_piece(row):
 	period = data[3].string
 	level = None
 	key = None
+	tonality = None
 
 	if data[4].string == 'Prep':
 		level = 0;
@@ -69,8 +70,14 @@ def process_piece(row):
 	else:
 		key = None
 
+	if key != None:
+		if key[0].isupper():
+			tonality = 'major'
+		else:
+			tonality = 'minor'
+
 		
-	piece = Piece(title=title, composer=composer, period=period, level=level, key=key)
+	piece = Piece(title=title, composer=composer, period=period, level=level, key=key, tonality=tonality)
 
 	return piece
 

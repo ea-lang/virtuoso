@@ -14,6 +14,7 @@ class Piece(db.Model):
 	period = db.Column(db.String(50), nullable=True, unique=False)
 	level = db.Column(db.Integer, nullable=True, unique=False)
 	key = db.Column(db.String(50), nullable=True, unique=False)
+	tonality = db.Column(db.String(50), nullable=True, unique=False)
 
 	def __repr__(self):
 

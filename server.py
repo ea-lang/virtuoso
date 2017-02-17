@@ -29,11 +29,13 @@ def search():
 	periods = db.session.query(Piece.period, db.func.count(Piece.period)).distinct(Piece.period).group_by(Piece.period).order_by(Piece.period).all()
 	levels = db.session.query(Piece.level, db.func.count(Piece.level)).distinct(Piece.level).group_by(Piece.level).order_by(Piece.level).all()
 	keys = db.session.query(Piece.key, db.func.count(Piece.key)).distinct(Piece.key).group_by(Piece.key).order_by(Piece.key).all()
+	tonalities = db.session.query(Piece.tonality, db.func.count(Piece.tonality)).distinct(Piece.tonality).group_by(Piece.tonality).order_by(Piece.tonality).all()
 
 	return render_template('search.html', composers=composers,
 											periods=periods,
 											levels=levels,
-											keys=keys)
+											keys=keys,
+											tonalities=tonalities)
 
 @app.route('/suggest')
 def suggest():
@@ -66,6 +68,7 @@ def suggestion_results():
 	period = request.args.get("period")
 	level = request.args.get("level")
 	key = request.args.get("key")
+	tonality = request.args.get("tonality")
 
 	filters = []
 
@@ -99,7 +102,13 @@ def suggestion_results():
 	else: 
 		key = ''
 
-	results = query_constructor(title, composer, period, level, key)
+	if tonality:
+		tonality = piece.tonality
+		filters.append('tonality')
+	else:
+		tonality = ''
+
+	results = query_constructor(title, composer, period, level, key, tonality)
 
 	return render_template('suggestion_results.html', piece=piece, 
 													  results=results,
@@ -114,8 +123,9 @@ def results():
 	period = request.args.get("period")
 	level = request.args.get("level")
 	key = request.args.get("key")
+	tonality = request.args.get("tonality")
 
-	query = query_constructor(title, composer, period, level, key)
+	query = query_constructor(title, composer, period, level, key, tonality)
 
 	return jsonify({'pieces_query_arr': query})
 
