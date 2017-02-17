@@ -1,6 +1,6 @@
 from jinja2 import StrictUndefined
 
-from flask import (Flask, render_template, redirect, request, flash, session)
+from flask import (Flask, render_template, redirect, request, flash, session, jsonify)
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -115,9 +115,9 @@ def results():
 	level = request.args.get("level")
 	key = request.args.get("key")
 
-	results = query_constructor(title, composer, period, level, key)
+	query = query_constructor(title, composer, period, level, key)
 
-	return render_template('results.html', results=results)
+	return jsonify({'pieces_query_arr': query})
 
 
 ##############################################################################

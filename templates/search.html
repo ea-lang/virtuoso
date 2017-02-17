@@ -4,9 +4,9 @@
 {% block content %}
 
  <h1>SEARCH</h1>
- <form action="/results"> 
- 	Title: <input type="text" name="title"><br>
- 	Composer: <select name="composer">
+ <form id="search-form" action="/results"> 
+ 	Title: <input type="text" id="title" name="title"><br>
+ 	Composer: <select id="composer" name="composer">
  				<option selected></option> 
  				{% for composer in composers %}
  		 		<option value={{ composer[0] }}>
@@ -15,7 +15,7 @@
  		 		</option>
  		 		{% endfor %}
 		 	  </select><br>
- 	Period: <select name="period">
+ 	Period: <select id="period" name="period">
  				<option selected></option> 
  				{% for period in periods %}
  		 		<option value={{ period[0] }}>
@@ -24,7 +24,7 @@
  		 		</option>
  		 		{% endfor %}
  		 		</select><br>
- 	Level: <select name="level">
+ 	Level: <select id="level" name="level">
  				<option selected></option> 
  				{% for level in levels %}
  		 		<option value={{ level[0] }}>
@@ -33,7 +33,7 @@
  		 		</option>
  		 		{% endfor %}
  		 		</select><br>
- 	Key: <select name="key">
+ 	Key: <select id="key" name="key">
  				<option selected></option> 
  				{% for key in keys %}
  		 		<option value={{ key[0] }}>
@@ -42,7 +42,11 @@
  		 		</option>
  		 		{% endfor %}
  		 		</select><br>
-	<input type="submit">
  </form>
+	<br>
+ <div id="results"></div>
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="/static/js/searchform.js"></script>
 
 {% endblock %}

@@ -9,7 +9,7 @@ from model import Piece, connect_to_db, db
 from sqlalchemy.orm.exc import NoResultFound
 
 
-def query_constructor(title='', composer='', period='', level='', key=''):
+def query_constructor(title, composer, period, level, key):
 
 	pieces_query = db.session.query(Piece.piece_id, 
 					 Piece.title,
@@ -18,21 +18,22 @@ def query_constructor(title='', composer='', period='', level='', key=''):
 					 Piece.level,
 					 Piece.key)
 
-	if title != '':
-		pieces_query = pieces_query.filter(Piece.title.like("%" + title + "%"))
+	if title != '' and title is not None:
+		pieces_query = pieces_query.filter(Piece.title.ilike("%" + title + "%"))
 
-	if composer != '':
+	if composer != '' and composer is not None:
 		pieces_query = pieces_query.filter(Piece.composer == composer)
 
-	if period != '':
+	if period != '' and period is not None:
 		pieces_query = pieces_query.filter(Piece.period == period)
 
-	if level != '':
+	if level != '' and level is not None:
 		pieces_query = pieces_query.filter(Piece.level == int(level))
 
-	if key != '':
+	if key != '' and key is not None:
 		pieces_query = pieces_query.filter(Piece.key == key)	
 
 	results = pieces_query.all()
 
+	# print title, composer, period, level, key
 	return results
