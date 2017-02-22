@@ -22,8 +22,6 @@ function getPieces(evt) {
 function showPieces(results) {
 	var pieces = results['pieces_query_arr'];
 	var str = '';
-
-	console.log(pieces)
 	
 	for (var i = 0; i < pieces.length; i++) {
 		
@@ -66,7 +64,5 @@ function showPieces(results) {
 
 $('#title').keyup(getPieces)
 $('.filter').on('change', getPieces)
-
-
 
 

@@ -8,7 +8,7 @@
 Select a composer.<br>
 
 <form action="/find-pieces-by-composer"> 
-	Composers: <select name="composer-id">
+	Composers: <select id="composer-id" name="composer-id">
 				{% for composer in composers %}
 				<option value={{ composer[0] }}>
 		 		{{ composer[1] }} 
@@ -16,13 +16,12 @@ Select a composer.<br>
 		 		</option>
 		 		{% endfor %}
 		 		</select><br><br>	
-<input type="submit">
-
 </form>
 
+<div id="results"></div>
 
 <script src="https://code.jquery.com/jquery.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="/static/js/suggestform.js"></script>
 
 
 {% endblock %}

@@ -51,12 +51,23 @@ def suggest():
 @app.route('/find-pieces-by-composer')
 def get_pieces_by_composer():
 
-	composer_id = request.args.get("composer-id")
+	composer_id = request.args.get("composer_id")
 
-	composer = db.session.query(Composer.name).filter_by(composer_id=composer_id).one()
-	pieces = db.session.query(Piece.piece_id, Piece.title).filter_by(composer_id=composer_id).all()
+	composer = db.session.query(Composer.name).filter_by(composer_id=composer_id).one()[0]
+	pieces = db.session.query(Piece).filter_by(composer_id=composer_id).all()
 
-	return render_template("findpiecesbycomposer.html", composer=composer, pieces=pieces)
+	pieces_arr = [{"composer": composer}]
+
+	for piece in pieces:
+		
+		pdict = {}
+
+		pdict["piece_id"] = piece.piece_id
+		pdict["title"] = piece.title
+		
+		pieces_arr.append(pdict)
+
+	return jsonify({'pieces_arr': pieces_arr})
 
 
 @app.route('/suggestion-results')
