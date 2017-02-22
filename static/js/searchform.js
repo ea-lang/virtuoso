@@ -1,13 +1,13 @@
 function getPieces(evt) {
 	var title = $("#title").val();
-	var composer = $("#composer").val();
+	var composer_id = $("#composer-id").val();
 	var period = $("#period").val();
 	var level = $("#level").val();
 	var key = $("#key").val();
 	var tonality = $("#tonality").val();
 
 	var data = {'title': title, 
-				'composer': composer,
+				'composer_id': composer_id,
 				'period': period,
 				'level': level,
 				'key': key,
@@ -22,30 +22,34 @@ function getPieces(evt) {
 function showPieces(results) {
 	var pieces = results['pieces_query_arr'];
 	var str = '';
+
+	console.log(pieces)
 	
 	for (var i = 0; i < pieces.length; i++) {
 		
 		var piece = pieces[i];
 
-		var piece_id = piece[0];
-		var title = piece[1];
-		var composer = piece[2];
-		var period = piece[3];
-		var level = piece[4];
+		var piece_id = piece["piece_id"];
+		var title = piece["title"];
+		var composer = piece["composer"];
+		var period = piece["period"];
+		var level = piece["level"];
 
-		if (piece[5] === null) {
-			var key = 'None';
+
+		if (piece["key"] === null) {
+			var key = "None";
 		}
 		else {
-			key = piece[5];
+			key = piece["key"];
 		}
 
-		if (piece[6] === null) {
-			var tonality = 'None';
+		if (piece["tonality"] === null) {
+			var tonality = "None";
 		}
 		else {
-			tonality = piece[6];
+			tonality = piece["tonality"];
 		}
+
 
 		str += '#' + piece_id + ' <strong>' + title + '</strong>'
 				+ '<ul>' 

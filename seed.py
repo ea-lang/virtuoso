@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from sqlalchemy import func
-from model import Piece
+from model import Piece, Composer
 
 from model import connect_to_db, db
 from server import app
@@ -21,13 +21,26 @@ def get_data_from_website():
 
 	return rows
 
+
+def process_composer(row):
+	"""Load composers from webpage into database."""
+
+	data = row.find_all('td')
+	name = data[2].string
+
+	composer = Composer(name=name)
+
+	return composer
+
+
 def process_piece(row):
 	"""Load pieces from webpage into database."""
 
 	data = row.find_all('td')
 
 	title = data[1].string
-	composer = data[2].string
+	composer_name = data[2].string
+	composer_id = db.session.query(Composer.composer_id).filter(Composer.name == composer_name).one()[0]
 	period = data[3].string
 	level = None
 	key = None
@@ -77,29 +90,36 @@ def process_piece(row):
 			tonality = 'minor'
 
 		
-	piece = Piece(title=title, composer=composer, period=period, level=level, key=key, tonality=tonality)
+	piece = Piece(title=title, composer_id=composer_id, period=period, level=level, key=key, tonality=tonality)
 
 	return piece
 
 
-
-def output_data(piece): 
+def output_data(item): 
 	
-	db.session.add(piece)
+	db.session.add(item)
 	db.session.commit()
-
 
 
 ################################################################################################
 
 if __name__ == "__main__":
-    connect_to_db(app)
+	connect_to_db(app)
 
-    db.create_all()
+	db.create_all()
 
-    website_data = get_data_from_website()
-    
-    for row in website_data:
+	website_data = get_data_from_website()
+	
+	for row in website_data:
+
+		composer = process_composer(row)
+		exists = db.session.query(Composer.name).filter(Composer.name == composer.name).scalar()
+		if exists is None:
+			output_data(composer)
+
 		piece = process_piece(row)
 		output_data(piece)
 
+	print "Loaded pieces database."
+
+	

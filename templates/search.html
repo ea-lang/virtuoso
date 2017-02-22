@@ -8,12 +8,12 @@
  	
  	Title: <input type="text" id="title" name="title"><br>
  	
- 	Composer: <select id="composer" class="filter" name="composer">
+ 	Composer: <select id="composer-id" class="filter" name="composer-id">
  				<option selected></option> 
  				{% for composer in composers %}
  		 		<option value={{ composer[0] }}>
- 		 		{{ composer[0] }} 
- 		 		({{ composer[1] }} pieces)
+ 		 		{{ composer[1] }} 
+ 		 		({{ composer[2] }} pieces)
  		 		</option>
  		 		{% endfor %}
 		 	  </select><br>

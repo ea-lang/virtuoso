@@ -4,7 +4,7 @@ from flask import (Flask, render_template, redirect, request, flash, session, js
 
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import Piece, connect_to_db, db
+from model import Piece, Composer, connect_to_db, db
 
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -25,17 +25,17 @@ def homepage():
 @app.route('/search')
 def search():
 
-	composers = db.session.query(Piece.composer, db.func.count(Piece.composer)).distinct(Piece.composer).group_by(Piece.composer).order_by(Piece.composer).all()
+	composers = db.session.query(Composer.composer_id, Composer.name, db.func.count(Piece.composer_id)).group_by(Composer.composer_id, Composer.name).join(Piece).order_by(Composer.name).all()
 	periods = db.session.query(Piece.period, db.func.count(Piece.period)).distinct(Piece.period).group_by(Piece.period).order_by(Piece.period).all()
 	levels = db.session.query(Piece.level, db.func.count(Piece.level)).distinct(Piece.level).group_by(Piece.level).order_by(Piece.level).all()
 	keys = db.session.query(Piece.key, db.func.count(Piece.key)).distinct(Piece.key).group_by(Piece.key).order_by(Piece.key).all()
 	tonalities = db.session.query(Piece.tonality, db.func.count(Piece.tonality)).distinct(Piece.tonality).group_by(Piece.tonality).order_by(Piece.tonality).all()
 
 	return render_template('search.html', composers=composers,
-											periods=periods,
-											levels=levels,
-											keys=keys,
-											tonalities=tonalities)
+										  periods=periods,
+										  levels=levels,
+										  keys=keys,
+										  tonalities=tonalities)
 
 @app.route('/suggest')
 def suggest():
@@ -43,16 +43,18 @@ def suggest():
 	pieces = db.session.query(Piece.piece_id, 
 							 Piece.title).all()
 
-	composers = db.session.query(Piece.composer, db.func.count(Piece.composer)).distinct(Piece.composer).group_by(Piece.composer).order_by(Piece.composer).all()
-
+	composers = db.session.query(Composer.composer_id, Composer.name, db.func.count(Piece.composer_id)).group_by(Composer.composer_id, Composer.name).join(Piece).order_by(Composer.name).all()
+	
 	return render_template('suggest.html', pieces=pieces, composers=composers)
 
 
 @app.route('/find-pieces-by-composer')
 def get_pieces_by_composer():
 
-	composer = request.args.get("composer")
-	pieces = db.session.query(Piece.piece_id, Piece.title).filter_by(composer=composer).all()
+	composer_id = request.args.get("composer-id")
+
+	composer = db.session.query(Composer.name).filter_by(composer_id=composer_id).one()
+	pieces = db.session.query(Piece.piece_id, Piece.title).filter_by(composer_id=composer_id).all()
 
 	return render_template("findpiecesbycomposer.html", composer=composer, pieces=pieces)
 
@@ -60,11 +62,11 @@ def get_pieces_by_composer():
 @app.route('/suggestion-results')
 def suggestion_results():
 
-	piece_id = request.args.get("piece")
+	piece_id = request.args.get("piece-id")
 	piece = db.session.query(Piece).filter_by(piece_id=piece_id).one()
 
 	title = request.args.get("title")
-	composer = request.args.get("composer")
+	composer_id = request.args.get("composer")
 	period = request.args.get("period")
 	level = request.args.get("level")
 	key = request.args.get("key")
@@ -78,8 +80,8 @@ def suggestion_results():
 	else: 
 		title = ''
 
-	if composer:
-		composer = piece.composer
+	if composer_id:
+		composer_id = piece.composer_id
 		filters.append('composer')
 	else: 
 		composer = ''
@@ -108,26 +110,44 @@ def suggestion_results():
 	else:
 		tonality = ''
 
-	results = query_constructor(title, composer, period, level, key, tonality)
+	pieces = query_constructor(title, composer_id, period, level, key, tonality)
 
-	return render_template('suggestion_results.html', piece=piece, 
-													  results=results,
-													  filters=filters)
+	return render_template('suggestion_results.html', piece=piece,
+													  filters=filters,		 
+													  pieces=pieces)
 
 
 @app.route("/results")
 def results():
 
 	title = request.args.get("title")
-	composer = request.args.get("composer")
+	composer_id = request.args.get("composer_id")
 	period = request.args.get("period")
 	level = request.args.get("level")
 	key = request.args.get("key")
 	tonality = request.args.get("tonality")
 
-	query = query_constructor(title, composer, period, level, key, tonality)
+	pieces = query_constructor(title, composer_id, period, level, key, tonality)
 
-	return jsonify({'pieces_query_arr': query})
+	pieces_arr = []
+
+	for piece in pieces:
+		
+		pdict = {}
+		composer_id = piece.composer_id
+
+		pdict["piece_id"] = piece.piece_id
+		pdict["title"] = piece.title
+		pdict["composer"] = db.session.query(Composer.name).filter_by(composer_id=composer_id).one()[0]
+		pdict["period"] = piece.period
+		pdict["level"] = piece.level
+		pdict["key"] = piece.key
+		pdict["tonality"] = piece.tonality
+
+		pieces_arr.append(pdict)
+
+
+	return jsonify({'pieces_query_arr': pieces_arr})
 
 
 ##############################################################################

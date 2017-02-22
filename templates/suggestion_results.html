@@ -7,7 +7,7 @@
 Your piece:<br><br>
 #{{ piece.piece_id }} <strong>{{ piece.title }}</strong> 
 <ul>
-	<li>Composer: {{ piece.composer }}</li> 
+	<li>Composer: {{ piece.composer.name }}</li> 
 	<li>Period: {{ piece.period }}</li>
 	<li>Level: {{ piece.level }}</li> 
 	<li>Key: {{ piece.key }}</li>
@@ -17,18 +17,16 @@ Your piece:<br><br>
 Similar pieces by filters:<br>
 {% for filter in filters %} {{ filter }}<br> {% endfor %}<br><br>
 
-{% for result in results %}
-#{{ result[0] }} <strong>{{ result[1] }}</strong> 
+{% for piece in pieces %}
+#{{ piece.piece_id }} <strong>{{ piece.title }}</strong> 
 <ul>
-	<li>Composer: {{ result[2] }}</li> 
-	<li>Period: {{ result[3] }}</li>
-	<li>Level: {{ result[4] }}</li> 
-	<li>Key: {{ result[5] }}</li>
-	<li>Tonality: {{ result[6] }}</li>
+	<li>Composer: {{ piece.composer.name }}</li> 
+	<li>Period: {{ piece.period }}</li>
+	<li>Level: {{ piece.level }}</li> 
+	<li>Key: {{ piece.key }}</li>
+	<li>Tonality: {{ piece.tonality }}</li>
 </ul>
 {% endfor %}
-
-
 
 
 {% endblock %}

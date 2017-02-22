@@ -8,11 +8,11 @@
 Select a composer.<br>
 
 <form action="/find-pieces-by-composer"> 
-	Composers: <select name="composer">
+	Composers: <select name="composer-id">
 				{% for composer in composers %}
 				<option value={{ composer[0] }}>
-		 		{{ composer[0] }} 
-		 		({{ composer[1] }} pieces)
+		 		{{ composer[1] }} 
+		 		({{ composer[2] }} pieces)
 		 		</option>
 		 		{% endfor %}
 		 		</select><br><br>	
@@ -23,7 +23,6 @@ Select a composer.<br>
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<!-- <script src="/static/js/eventlistener.js"></script> -->
 
 
 {% endblock %}

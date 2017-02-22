@@ -5,10 +5,10 @@
 
 {% block content %}
 <h1>FIND SIMILAR PIECES</h1>
-Select a piece by {{ composer }}.<br>
+Select a piece by {{ composer[0] }}.<br>
 
 <form action="/suggestion-results"> 
-	Pieces: <select name="piece">
+	Pieces: <select name="piece-id">
 				{% for piece in pieces %}
 		 		<option value={{ piece[0] }}>
 		 		{{ piece[1] }} </option>
