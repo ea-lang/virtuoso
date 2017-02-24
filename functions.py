@@ -25,12 +25,59 @@ def query_constructor(title, composer_id, period, level, key, tonality):
 	if level != '' and level is not None:
 		pieces_query = pieces_query.filter(Piece.level == int(level))
 
-	if key != '' and key is not None:
+	if key != '':
 		pieces_query = pieces_query.filter(Piece.key == key)	
 
-	if tonality != '' and tonality is not None:
+	if tonality != '':
 		pieces_query = pieces_query.filter(Piece.tonality == tonality)	
 
 	results = pieces_query.all()
 
 	return results
+
+
+def make_piece_dict(pieces):
+
+	pieces_arr = []
+
+	for piece in pieces:
+		
+		pdict = {}
+		composer_id = piece.composer_id
+
+		pdict["piece_id"] = piece.piece_id
+		pdict["title"] = piece.title
+		pdict["composer"] = db.session.query(Composer.name).filter_by(composer_id=composer_id).one()[0]
+		pdict["period"] = piece.period
+		pdict["level"] = piece.level
+		pdict["key"] = piece.key
+		pdict["tonality"] = piece.tonality
+
+		pieces_arr.append(pdict)
+
+	return pieces_arr
+
+
+
+def make_filter_list(composer_id, period, level, key, tonality):
+
+	filters = []
+
+	if composer_id != '':
+		filters.append('composer')
+
+	if period != '':
+		filters.append('period')
+
+	if level != '':
+		filters.append('level')
+
+	if key != '':
+		filters.append('key')
+
+	if tonality != '':
+		filters.append('tonality')
+
+	return filters
+
+

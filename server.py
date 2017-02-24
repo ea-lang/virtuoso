@@ -8,7 +8,7 @@ from model import Piece, Composer, connect_to_db, db
 
 from sqlalchemy.orm.exc import NoResultFound
 
-from functions import query_constructor
+from functions import query_constructor, make_piece_dict, make_filter_list
 
 app = Flask(__name__)
 
@@ -73,59 +73,55 @@ def get_pieces_by_composer():
 @app.route('/suggestion-results')
 def suggestion_results():
 
-	piece_id = request.args.get("piece-id")
+	piece_id = request.args.get("piece_id")
 	piece = db.session.query(Piece).filter_by(piece_id=piece_id).one()
 
-	title = request.args.get("title")
-	composer_id = request.args.get("composer")
-	period = request.args.get("period")
-	level = request.args.get("level")
-	key = request.args.get("key")
-	tonality = request.args.get("tonality")
+	check_title = request.args.get("title")
+	check_composer_id = request.args.get("composer_id")
+	check_period = request.args.get("period")
+	check_level = request.args.get("level")
+	check_key = request.args.get("key")
+	check_tonality = request.args.get("tonality")
 
-	filters = []
+	title = ''
+	key = ''
+	tonality = ''
 
-	if title:
-		title = title
-		filters.append('title')
-	else: 
-		title = ''
-
-	if composer_id:
+	if check_composer_id is not None:
 		composer_id = piece.composer_id
-		filters.append('composer')
-	else: 
-		composer = ''
+	else:
+		composer_id = ''
 
-	if period:
+	if check_period is not None:
 		period = piece.period
-		filters.append('period')
 	else: 
 		period = ''
 
-	if level:
+	if check_level is not None:
 		level = piece.level
-		filters.append('level')
-	else: 
+	else:
 		level = ''
 
-	if key:
-		key = piece.key
-		filters.append('key')
-	else: 
-		key = ''
+	if check_key is not None:
+		if piece.key is not None:
+			key = piece.key
+		else:
+			key = None
 
-	if tonality:
-		tonality = piece.tonality
-		filters.append('tonality')
-	else:
-		tonality = ''
+	if check_tonality is not None:
+		if piece.tonality is not None:
+			tonality = piece.tonality
+		else:
+			key = None
 
 	pieces = query_constructor(title, composer_id, period, level, key, tonality)
+	pieces_arr = make_piece_dict(pieces)
+	my_piece = make_piece_dict([piece])
 
-	return render_template('suggestion_results.html', piece=piece,
-													  filters=filters,		 
-													  pieces=pieces)
+	filter_list = make_filter_list(composer_id, period, level, key, tonality)
+
+	return jsonify({'my_piece': my_piece, 'pieces_query_arr': pieces_arr, 'filters': filter_list})
+
 
 
 @app.route("/results")
@@ -140,23 +136,7 @@ def results():
 
 	pieces = query_constructor(title, composer_id, period, level, key, tonality)
 
-	pieces_arr = []
-
-	for piece in pieces:
-		
-		pdict = {}
-		composer_id = piece.composer_id
-
-		pdict["piece_id"] = piece.piece_id
-		pdict["title"] = piece.title
-		pdict["composer"] = db.session.query(Composer.name).filter_by(composer_id=composer_id).one()[0]
-		pdict["period"] = piece.period
-		pdict["level"] = piece.level
-		pdict["key"] = piece.key
-		pdict["tonality"] = piece.tonality
-
-		pieces_arr.append(pdict)
-
+	pieces_arr = make_piece_dict(pieces)
 
 	return jsonify({'pieces_query_arr': pieces_arr})
 

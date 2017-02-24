@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Homepage
+{% block title %}Find similar pieces
 
 {% endblock %}
 
@@ -18,10 +18,23 @@ Select a composer.<br>
 		 		</select><br><br>	
 </form>
 
-<div id="results"></div>
+<div id="results"></div><br>
+
+<!-- <div>Find similar pieces by:<br><form action ='/suggestion-results'>
+		Composer<input type='checkbox' name='composer' id='composer' class='filter'><br>
+		Period<input type='checkbox' name='period' id='period' class='filter'><br>
+		Level<input type='checkbox' name='level' id='level' class='filter'><br>
+		Key<input type='checkbox' name='key' id='key' class='filter'><br>
+		Tonality<input type='checkbox' name='tonality' id='tonality' class='filter'><br></form>
+</div> -->
+
+<div id="my_piece"></div>
+<div id="filters"></div>
+<div id="results2"></div>
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="/static/js/suggestform.js"></script>
+
 
 
 {% endblock %}
