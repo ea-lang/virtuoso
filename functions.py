@@ -58,7 +58,6 @@ def make_piece_dict(pieces):
 	return pieces_arr
 
 
-
 def make_filter_list(composer_id, period, level, key, tonality):
 
 	filters = []

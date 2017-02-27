@@ -32,23 +32,9 @@ function showPieces(results) {
 		var composer = piece["composer"];
 		var period = piece["period"];
 		var level = piece["level"];
-
-
-		if (piece["key"] === null) {
-			var key = "None";
-		}
-		else {
-			key = piece["key"];
-		}
-
-		if (piece["tonality"] === null) {
-			var tonality = "None";
-		}
-		else {
-			tonality = piece["tonality"];
-		}
-
-
+		var key = piece['key'] !== null ? piece["key"] : "None";
+		var tonality = piece['tonality'] !== null ? piece["tonality"] : "None";
+			
 		str += '#' + piece_id + ' <strong>' + title + '</strong>'
 				+ '<ul>' 
 				+ '<li> Composer: ' + composer + '</li>'

@@ -20,3 +20,10 @@ def test():
 	soup = BeautifulSoup(html, "html.parser")
 	piece = process_piece(soup)
 	assert piece.key == None
+
+
+def test_C_sharp():
+	html = '<tr><td>3011</td><td>Nocturne in C sharp minor, Op. Post.</td><td>Chopin</td><td>Romantic</td><td>10</td></tr>'
+	soup = BeautifulSoup(html, "html.parser")
+	piece = process_piece(soup)
+	assert piece.key == 'c#'

@@ -61,7 +61,13 @@ def process_piece(row):
 		except Exception as e:
 			string_next = ''
 
-		if string_next.lower() == 'minor' or string_next.lower() == 'min':
+		if 'C sharp' in title or 'C-sharp' in title:
+			key = "c#"
+		elif 'F sharp minor' in title:
+			key = "f#"
+		elif "B flat Minor" in title:
+			key = "bb"
+		elif string_next.lower() == 'minor' or string_next.lower() == 'min':
 			key = lowerstring
 		elif string_next.lower() == 'sharp':
 			key = string + '#'

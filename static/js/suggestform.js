@@ -53,35 +53,14 @@ function showPieces(results) {
 $('#composer-id').on('change', getPieces)
 
 function getPieces2(evt) {
-	
-	var piece_id = $("#piece-id").val();
 
-	if ($('#composer').is(':checked')) {
-		var composer_id = true
-	}
-
-	if ($('#period').is(':checked')) {
-		var period = true
-	}
-
-	if ($('#level').is(':checked')) {
-		var level = true
-	}
-
-	if ($('#key').is(':checked')) {
-		var key = true
-	}
-
-	if ($('#tonality').is(':checked')) {
-		var tonality = true
-	}
-
-	var data = {'piece_id': piece_id, 
-				'composer_id': composer_id,
-				'period': period,
-				'level': level,
-				'key': key,
-				'tonality': tonality};
+	var data = {'piece_id': $("#piece-id").val(),
+				'composer_id': $('#composer').is(':checked'),
+				'period': $('#period').is(':checked'),
+				'level': $('#level').is(':checked'),
+				'key': $('#key').is(':checked'),
+				'tonality': $('#tonality').is(':checked')
+				}
 
 	var url = '/suggestion-results';
 

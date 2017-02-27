@@ -76,43 +76,12 @@ def suggestion_results():
 	piece_id = request.args.get("piece_id")
 	piece = db.session.query(Piece).filter_by(piece_id=piece_id).one()
 
-	check_title = request.args.get("title")
-	check_composer_id = request.args.get("composer_id")
-	check_period = request.args.get("period")
-	check_level = request.args.get("level")
-	check_key = request.args.get("key")
-	check_tonality = request.args.get("tonality")
-
 	title = ''
-	key = ''
-	tonality = ''
-
-	if check_composer_id is not None:
-		composer_id = piece.composer_id
-	else:
-		composer_id = ''
-
-	if check_period is not None:
-		period = piece.period
-	else: 
-		period = ''
-
-	if check_level is not None:
-		level = piece.level
-	else:
-		level = ''
-
-	if check_key is not None:
-		if piece.key is not None:
-			key = piece.key
-		else:
-			key = None
-
-	if check_tonality is not None:
-		if piece.tonality is not None:
-			tonality = piece.tonality
-		else:
-			key = None
+	composer_id = piece.composer_id if request.args.get("composer_id") == 'true' else '' 
+	period = piece.period if request.args.get("period") == 'true' else ''
+	level = piece.level if request.args.get("level") == 'true' else ''
+	key = piece.key if request.args.get("key") == 'true' else ''
+	tonality = piece.tonality if request.args.get("tonality") == 'true' else ''
 
 	pieces = query_constructor(title, composer_id, period, level, key, tonality)
 	pieces_arr = make_piece_dict(pieces)
@@ -121,7 +90,6 @@ def suggestion_results():
 	filter_list = make_filter_list(composer_id, period, level, key, tonality)
 
 	return jsonify({'my_piece': my_piece, 'pieces_query_arr': pieces_arr, 'filters': filter_list})
-
 
 
 @app.route("/results")
