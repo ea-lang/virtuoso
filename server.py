@@ -26,10 +26,10 @@ def homepage():
 def search():
 
 	composers = db.session.query(Composer.composer_id, Composer.name, db.func.count(Piece.composer_id)).group_by(Composer.composer_id, Composer.name).join(Piece).order_by(Composer.name).all()
-	periods = db.session.query(Piece.period, db.func.count(Piece.period)).distinct(Piece.period).group_by(Piece.period).order_by(Piece.period).all()
-	levels = db.session.query(Piece.level, db.func.count(Piece.level)).distinct(Piece.level).group_by(Piece.level).order_by(Piece.level).all()
-	keys = db.session.query(Piece.key, db.func.count(Piece.key)).distinct(Piece.key).group_by(Piece.key).order_by(Piece.key).all()
-	tonalities = db.session.query(Piece.tonality, db.func.count(Piece.tonality)).distinct(Piece.tonality).group_by(Piece.tonality).order_by(Piece.tonality).all()
+	periods = db.session.query(Piece.period, db.func.count(Piece.period)).distinct(Piece.period).filter(Piece.period != None).group_by(Piece.period).order_by(Piece.period).all()
+	levels = db.session.query(Piece.level, db.func.count(Piece.level)).distinct(Piece.level).filter(Piece.level != None).group_by(Piece.level).order_by(Piece.level).all()
+	keys = db.session.query(Piece.key, db.func.count(Piece.key)).distinct(Piece.key).filter(Piece.key != None).group_by(Piece.key).order_by(Piece.key).all()
+	tonalities = db.session.query(Piece.tonality, db.func.count(Piece.tonality)).distinct(Piece.tonality).filter(Piece.tonality != None).group_by(Piece.tonality).order_by(Piece.tonality).all()
 
 	return render_template('search.html', composers=composers,
 										  periods=periods,

@@ -41,7 +41,13 @@ def process_piece(row):
 	title = data[1].string
 	composer_name = data[2].string
 	composer_id = db.session.query(Composer.composer_id).filter(Composer.name == composer_name).one()[0]
-	period = data[3].string
+	
+	period_str = data[3].encode('utf8').lstrip('<td>').rstrip('</td>').strip().lower()
+	if len(period_str) > 2:
+		period = period_str[0].upper() + period_str[1:]
+	else:
+		period = None
+	
 	level = None
 	key = None
 	tonality = None
@@ -91,9 +97,9 @@ def process_piece(row):
 
 	if key != None:
 		if key[0].isupper():
-			tonality = 'major'
+			tonality = 'Major'
 		else:
-			tonality = 'minor'
+			tonality = 'Minor'
 
 		
 	piece = Piece(title=title, composer_id=composer_id, period=period, level=level, key=key, tonality=tonality)
@@ -119,12 +125,14 @@ if __name__ == "__main__":
 	for row in website_data:
 
 		composer = process_composer(row)
-		exists = db.session.query(Composer.name).filter(Composer.name == composer.name).scalar()
-		if exists is None:
+		composer_exists = db.session.query(Composer.name).filter(Composer.name == composer.name).scalar()
+		if composer_exists is None:
 			output_data(composer)
 
 		piece = process_piece(row)
-		output_data(piece)
+		piece_exists = db.session.query(Piece.title, Piece.composer, Piece.level).filter(Piece.title == piece.title, Piece.composer == piece.composer, Piece.level == piece.level).scalar()
+		if piece_exists is None:
+			output_data(piece)
 
 	print "Loaded pieces database."
 
