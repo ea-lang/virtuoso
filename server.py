@@ -312,14 +312,6 @@ def create_major_radar_chart_data():
 	composer1_id = request.args.get('composer1_id')
 	composer2_id = request.args.get('composer2_id')
 
-	if composer1_id == None or composer1_id == '':
-		composer1_id = 12
-	if composer2_id == None or composer2_id == '':
-		composer2_id = 10	
-
-	composer1_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer1_id)), tonality='Major').all()
-	composer2_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer2_id)), tonality='Major').all()
-
 	data = {
     		"labels": ["C", "G", "D", "A", "E", "B", "Gb/F#", "Db", "Ab", "Eb", "Bb", "F"],
     		"datasets": [
@@ -346,21 +338,34 @@ def create_major_radar_chart_data():
     	]
 	}
 
-	for piece in composer1_pieces:
-		data["datasets"][0]["label"] = piece.composer.name.encode('utf8')
-		if piece.key != None:
-			if piece.key == "Gb" or piece.key == "F#":
-				data["datasets"][0]["data"][6] += 1
-			else:
-				data["datasets"][0]["data"][data["labels"].index(piece.key)] += 1
+	if composer1_id != None and composer1_id != '':
+		composer1_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer1_id)), tonality='Major').all()
+	else:
+		composer1_pieces = None
+	
+	if composer2_id != None and composer2_id != '':
+		composer2_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer2_id)), tonality='Major').all()
+	else: 
+		composer2_pieces = None
 
-	for piece in composer2_pieces:
-		data["datasets"][1]["label"] = piece.composer.name.encode('utf8')
-		if piece.key != None:
-			if piece.key == "Gb" or piece.key == "F#":
-				data["datasets"][1]["data"][6] += 1
-			else:
-				data["datasets"][1]["data"][data["labels"].index(piece.key)] += 1
+	
+	if composer1_pieces != None:
+		for piece in composer1_pieces:
+			data["datasets"][0]["label"] = piece.composer.name.encode('utf8')
+			if piece.key != None:
+				if piece.key == "Gb" or piece.key == "F#":
+					data["datasets"][0]["data"][6] += 1
+				else:
+					data["datasets"][0]["data"][data["labels"].index(piece.key)] += 1
+
+	if composer2_pieces != None:
+		for piece in composer2_pieces:
+			data["datasets"][1]["label"] = piece.composer.name.encode('utf8')
+			if piece.key != None:
+				if piece.key == "Gb" or piece.key == "F#":
+					data["datasets"][1]["data"][6] += 1
+				else:
+					data["datasets"][1]["data"][data["labels"].index(piece.key)] += 1
 
 	return jsonify(data)
 
