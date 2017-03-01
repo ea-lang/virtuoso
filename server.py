@@ -306,6 +306,16 @@ def display_charts():
 
 	return render_template("charts.html", composers=composers)
 
+
+@app.route('/radar-charts')
+def display_radar_charts():
+
+	composers = db.session.query(Composer.composer_id, Composer.name, db.func.count(Piece.composer_id)).having(db.func.count(Piece.composer_id) >= 20).group_by(Composer.composer_id, Composer.name).join(Piece).order_by(Composer.name).all()
+	periods = db.session.query(Piece.period, db.func.count(Piece.period)).distinct(Piece.period).having(db.func.count(Piece.period) > 1).filter(Piece.period != None).group_by(Piece.period).order_by(Piece.period).all()
+
+	return render_template("radar-charts.html", composers=composers, periods=periods)
+
+
 @app.route("/radar-chart.json")
 def create_radar_chart_data():
 

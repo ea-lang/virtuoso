@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Charts{% endblock %}
+
+{% block content %}
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
+
+
+<h1>Charts</h1>
+
+ <center><h2>Composer Radar Chart</h2></center>
+  <div id="radar-select-composers">
+    <center>
+
+      Circle of Fifths: <input type="radio" class="tonality" name="tonality" value="major"> Major
+                        <input type="radio" class="tonality" name="tonality" value="minor"> Minor<br><br>
+
+      Composer 1: <select id="composer1-id" class="composer-radar" name="composer">
+          <option selected></option> 
+          {% for composer in composers %}
+          <option value={{ composer[0] }}>
+          {{ composer[1] }} 
+          ({{ composer[2] }} pieces)
+          </option>
+          {% endfor %}
+          </select>
+      
+      Composer 2: <select id="composer2-id" class="composer-radar" name="composer">
+          <option selected></option> 
+          {% for composer in composers %}
+          <option value={{ composer[0] }}>
+          {{ composer[1] }} 
+          ({{ composer[2] }} pieces)
+          </option>
+          {% endfor %}
+          </select><br>
+    
+    </center>
+  </div>
+
+
+  <div class="counts-chart">
+    <canvas id="composerRadar"></canvas>
+  </div>
+
+<center><h2>Periods Radar Chart</h2></center>
+  <div id="radar-select-periods">
+    <center>
+
+      Circle of Fifths: <input type="radio" class="tonality2" name="tonality2" value="major"> Major
+                        <input type="radio" class="tonality2" name="tonality2" value="minor"> Minor<br><br>
+
+      Period 1: <select id="period1" class="period-radar" name="period">
+          <option selected></option> 
+          {% for period in periods %}
+          <option value={{ period[0] }}>
+          {{ period[0] }} 
+          ({{ period[1] }} pieces)
+          </option>
+          {% endfor %}
+          </select>
+      
+      Period 2: <select id="period2" class="period-radar" name="period">
+          <option selected></option> 
+          {% for period in periods %}
+          <option value={{ period[0] }}>
+          {{ period[0] }} 
+          ({{ period[1] }} pieces)
+          </option>
+          {% endfor %}
+          </select><br>
+    
+    </center>
+  </div>
+
+  <div class="counts-chart">
+    <canvas id="periodRadar"></canvas>
+  </div>
+
+  <script src="/static/js/radarchart.js"></script>
+
+
+{% endblock %}
