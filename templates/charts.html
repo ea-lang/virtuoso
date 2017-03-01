@@ -30,11 +30,13 @@
     <canvas id="levelPie"></canvas>
   </div>
 
-<script src="/static/js/charts.js"></script>
-
- <center><h2>Composer Radar Chart (Major)</h2></center>
+ <center><h2>Composer Radar Chart</h2></center>
   <div id="radar-select">
     <center>
+
+      Circle of Fifths: <input type="radio" class="tonality" name="tonality" value="major"> Major
+                        <input type="radio" class="tonality" name="tonality" value="minor"> Minor<br><br>
+
       Composer 1: <select id="composer1-id" class="composer-radar" name="composer">
           <option selected></option> 
           {% for composer in composers %}
@@ -44,6 +46,7 @@
           </option>
           {% endfor %}
           </select>
+      
       Composer 2: <select id="composer2-id" class="composer-radar" name="composer">
           <option selected></option> 
           {% for composer in composers %}
@@ -53,16 +56,17 @@
           </option>
           {% endfor %}
           </select><br>
+    
     </center>
   </div>
 
 
   <div class="counts-chart">
-    <canvas id="composerMajorRadar"></canvas>
+    <canvas id="composerRadar"></canvas>
   </div>
 
-
-  <script src="/static/js/major-radarchart.js"></script>
+  <script src="/static/js/charts.js"></script>
+  <script src="/static/js/radarchart.js"></script>
 
 
 {% endblock %}

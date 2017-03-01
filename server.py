@@ -306,27 +306,28 @@ def display_charts():
 
 	return render_template("charts.html", composers=composers)
 
-@app.route("/major-radar-chart.json")
-def create_major_radar_chart_data():
+@app.route("/radar-chart.json")
+def create_radar_chart_data():
 
 	composer1_id = request.args.get('composer1_id')
 	composer2_id = request.args.get('composer2_id')
+	tonality = request.args.get('tonality')
 
 	data = {
-    		"labels": ["C", "G", "D", "A", "E", "B", "Gb/F#", "Db", "Ab", "Eb", "Bb", "F"],
+    		"labels": [],
     		"datasets": [
         	{
-	            "label": None,
-	            "backgroundColor": "rgba(179,181,198,0.2)",
-	            "borderColor": "rgba(179,181,198,1)",
-	            "pointBackgroundColor": "rgba(179,181,198,1)",
+	            "label": "None",
+	            "backgroundColor": "rgba(88,146,227,0.2)",
+	            "borderColor": "rgba(88,146,227,1)",
+	            "pointBackgroundColor": "rgba(88,146,227,1)",
 	            "pointBorderColor": "#fff",
 	            "pointHoverBackgroundColor": "#fff",
-	            "pointHoverBorderColor": "rgba(179,181,198,1)",
+	            "pointHoverBorderColor": "rgba(88,146,227,1)",
 	            "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         	},
         	{
-	            "label": None,
+	            "label": "None",
 	            "backgroundColor": "rgba(255,99,132,0.2)",
 	            "borderColor": "rgba(255,99,132,1)",
 	            "pointBackgroundColor": "rgba(255,99,132,1)",
@@ -338,34 +339,80 @@ def create_major_radar_chart_data():
     	]
 	}
 
-	if composer1_id != None and composer1_id != '':
-		composer1_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer1_id)), tonality='Major').all()
-	else:
-		composer1_pieces = None
-	
-	if composer2_id != None and composer2_id != '':
-		composer2_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer2_id)), tonality='Major').all()
-	else: 
-		composer2_pieces = None
+	if tonality == 'major':
 
-	
-	if composer1_pieces != None:
-		for piece in composer1_pieces:
-			data["datasets"][0]["label"] = piece.composer.name.encode('utf8')
-			if piece.key != None:
-				if piece.key == "Gb" or piece.key == "F#":
-					data["datasets"][0]["data"][6] += 1
-				else:
-					data["datasets"][0]["data"][data["labels"].index(piece.key)] += 1
+		data["labels"] = ["C", "G", "D", "A", "E", "B", "Gb/F#", "Db", "Ab", "Eb", "Bb", "F"]
 
-	if composer2_pieces != None:
-		for piece in composer2_pieces:
-			data["datasets"][1]["label"] = piece.composer.name.encode('utf8')
-			if piece.key != None:
-				if piece.key == "Gb" or piece.key == "F#":
-					data["datasets"][1]["data"][6] += 1
-				else:
-					data["datasets"][1]["data"][data["labels"].index(piece.key)] += 1
+		if composer1_id != None and composer1_id != '':
+			composer1_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer1_id)), tonality='Major').all()
+		else:
+			composer1_pieces = None
+
+		if composer2_id != None and composer2_id != '':
+			composer2_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer2_id)), tonality='Major').all()
+		else: 
+			composer2_pieces = None
+
+
+		if composer1_pieces != None:
+			for piece in composer1_pieces:
+				data["datasets"][0]["label"] = piece.composer.name.encode('utf8')
+				if piece.key != None:
+					if piece.key == "Gb" or piece.key == "F#":
+						data["datasets"][0]["data"][6] += 1
+					else:
+						data["datasets"][0]["data"][data["labels"].index(piece.key)] += 1
+
+		if composer2_pieces != None:
+			for piece in composer2_pieces:
+				data["datasets"][1]["label"] = piece.composer.name.encode('utf8')
+				if piece.key != None:
+					if piece.key == "Gb" or piece.key == "F#":
+						data["datasets"][1]["data"][6] += 1
+					else:
+						data["datasets"][1]["data"][data["labels"].index(piece.key)] += 1
+
+	if tonality == 'minor':
+
+		data["labels"] = ["a", "e", "b", "f#", "c#", "g#/ab", "d#/eb", "bb/a#", "f", "c", "g", "d"]
+
+		if composer1_id != None and composer1_id != '':
+			composer1_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer1_id)), tonality='Minor').all()
+		else:
+			composer1_pieces = None
+
+		if composer2_id != None and composer2_id != '':
+			composer2_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer2_id)), tonality='Minor').all()
+		else: 
+			composer2_pieces = None
+
+
+		if composer1_pieces != None:
+			for piece in composer1_pieces:
+				data["datasets"][0]["label"] = piece.composer.name.encode('utf8')
+				if piece.key != None:
+					if piece.key == "g#" or piece.key == "ab":
+						data["datasets"][0]["data"][5] += 1
+					elif piece.key == 'd#' or piece.key == 'eb':
+						data["datasets"][0]["data"][6] += 1
+					elif piece.key == 'bb' or piece.key == 'a#':
+						data["datasets"][0]["data"][7] += 1
+					else:
+						data["datasets"][0]["data"][data["labels"].index(piece.key)] += 1
+
+		if composer2_pieces != None:
+			for piece in composer2_pieces:
+				data["datasets"][1]["label"] = piece.composer.name.encode('utf8')
+				if piece.key != None:
+					if piece.key == "g#" or piece.key == "ab":
+						data["datasets"][1]["data"][5] += 1
+					elif piece.key == 'd#' or piece.key == 'eb':
+						data["datasets"][1]["data"][6] += 1
+					elif piece.key == 'bb' or piece.key == 'a#':
+						data["datasets"][1]["data"][7] += 1
+					else:
+						data["datasets"][1]["data"][data["labels"].index(piece.key)] += 1
+
 
 	return jsonify(data)
 
