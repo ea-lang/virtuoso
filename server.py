@@ -109,6 +109,262 @@ def results():
 	return jsonify({'pieces_query_arr': pieces_arr})
 
 
+@app.route("/periods-counts.json")
+def get_periods_counts():
+
+	periods = db.session.query(Piece.period, db.func.count(Piece.period)).distinct(Piece.period).filter(Piece.period != None).group_by(Piece.period).order_by(Piece.period).all()
+
+	periods_dict = {
+                "labels": [],
+                "datasets": [
+                    {
+                        "data": [],
+                        "backgroundColor": [
+                            "#510b25",
+                            "#d1a475",
+                            "#0a1754",
+                            "#442f13",
+                            "#fff5e8",
+                            "#f2c4d2"
+                        ],
+                        "hoverBackgroundColor": [
+                            "#510b25",
+                            "#d1a475",
+                            "#0a1754",
+                            "#442f13",
+                            "#fff5e8",
+                            "#f2c4d2"
+                        ]
+                    }]
+            }
+
+	for period in periods:
+		periods_dict["labels"].append(period[0].encode('utf8'))
+		periods_dict["datasets"][0]["data"].append(int(str(period[1])))
+
+	return jsonify(periods_dict)
+
+
+@app.route("/majorkey-counts.json")
+def get_majorkeys_counts():
+
+	keys = db.session.query(Piece.key, db.func.count(Piece.key)).distinct(Piece.key).filter(Piece.key != None, Piece.tonality == 'Major').group_by(Piece.key).order_by(Piece.key).all()
+
+	key_dict = {
+                "labels": [],
+                "datasets": [
+                    {
+                        "data": [],
+                        "backgroundColor": [
+                        	"#d1a475",
+                        	"#442f13",
+                        	"#e51235",
+                        	"#ff4967",
+                        	"#f2c4d2",
+                        	"#b6d0f9",
+                        	"#ff6251",
+                        	"#510b25",
+                        	"#0a1754",
+                        	"#fff5e8",
+                        	"#fc71b9",
+                        	"#f9939d",
+                        	"#ffeaf0"
+                        ],
+                        "hoverBackgroundColor": [
+                           	"#d1a475",
+                        	"#442f13",
+                        	"#e51235",
+                        	"#ff4967",
+                        	"#f2c4d2",
+                        	"#b6d0f9",
+                        	"#ff6251",
+                        	"#510b25",
+                        	"#0a1754",
+                        	"#fff5e8",
+                        	"#fc71b9",
+                        	"#f9939d",
+                        	"#ffeaf0"
+                        ]
+                    }]
+            }
+
+	for key in keys:
+		key_dict["labels"].append(key[0].encode('utf8'))
+		key_dict["datasets"][0]["data"].append(int(str(key[1])))
+
+	return jsonify(key_dict)
+
+@app.route("/minorkey-counts.json")
+def get_minorkeys_counts():
+
+	keys = db.session.query(Piece.key, db.func.count(Piece.key)).distinct(Piece.key).filter(Piece.key != None, Piece.tonality == 'Minor').group_by(Piece.key).order_by(Piece.key).all()
+
+	key_dict = {
+                "labels": [],
+                "datasets": [
+                    {
+                        "data": [],
+                        "backgroundColor": [
+                        	"#d1a475",
+                        	"#442f13",
+                        	"#e51235",
+                        	"#ff4967",
+                        	"#f2c4d2",
+                        	"#b6d0f9",
+                        	"#ff6251",
+                        	"#510b25",
+                        	"#0a1754",
+                        	"#fff5e8",
+                        	"#fc71b9",
+                        	"#f9939d",
+                        	"#ffeaf0"
+                        ],
+                        "hoverBackgroundColor": [
+                           	"#d1a475",
+                        	"#442f13",
+                        	"#e51235",
+                        	"#ff4967",
+                        	"#f2c4d2",
+                        	"#b6d0f9",
+                        	"#ff6251",
+                        	"#510b25",
+                        	"#0a1754",
+                        	"#fff5e8",
+                        	"#fc71b9",
+                        	"#f9939d",
+                        	"#ffeaf0"
+                        ]
+                    }]
+            }
+
+	for key in keys:
+		key_dict["labels"].append(key[0].encode('utf8'))
+		key_dict["datasets"][0]["data"].append(int(str(key[1])))
+
+	return jsonify(key_dict)
+
+
+@app.route("/level-counts.json")
+def get_level_counts():
+
+	levels = db.session.query(Piece.level, db.func.count(Piece.level)).distinct(Piece.level).filter(Piece.level != None).group_by(Piece.level).order_by(Piece.level).all()
+
+	level_dict = {
+                "labels": [],
+                "datasets": [
+                    {
+                        "data": [],
+                        "backgroundColor": [
+                        	"#d1a475",
+                        	"#442f13",
+                        	"#e51235",
+                        	"#ff4967",
+                        	"#f2c4d2",
+                        	"#b6d0f9",
+                        	"#ff6251",
+                        	"#510b25",
+                        	"#0a1754",
+                        	"#fff5e8",
+                        	"#fc71b9",
+                        	"#f9939d",
+                        	"#ffeaf0"
+                        ],
+                        "hoverBackgroundColor": [
+                           	"#d1a475",
+                        	"#442f13",
+                        	"#e51235",
+                        	"#ff4967",
+                        	"#f2c4d2",
+                        	"#b6d0f9",
+                        	"#ff6251",
+                        	"#510b25",
+                        	"#0a1754",
+                        	"#fff5e8",
+                        	"#fc71b9",
+                        	"#f9939d",
+                        	"#ffeaf0"
+                        ]
+                    }]
+            }
+
+	for level in levels:
+
+		if level[0] == 0:
+			level_dict["labels"].append('Prep')
+		else:
+			level_dict["labels"].append(level[0])
+		
+		level_dict["datasets"][0]["data"].append(int(str(level[1])))
+
+	return jsonify(level_dict)
+
+
+@app.route("/charts")
+def display_charts():
+
+	composers = db.session.query(Composer.composer_id, Composer.name, db.func.count(Piece.composer_id)).having(db.func.count(Piece.composer_id) >= 20).group_by(Composer.composer_id, Composer.name).join(Piece).order_by(Composer.name).all()
+
+	return render_template("charts.html", composers=composers)
+
+@app.route("/major-radar-chart.json")
+def create_major_radar_chart_data():
+
+	composer1_id = request.args.get('composer1_id')
+	composer2_id = request.args.get('composer2_id')
+
+	if composer1_id == None or composer1_id == '':
+		composer1_id = 12
+	if composer2_id == None or composer2_id == '':
+		composer2_id = 10	
+
+	composer1_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer1_id)), tonality='Major').all()
+	composer2_pieces = db.session.query(Piece).filter_by(composer_id=int(str(composer2_id)), tonality='Major').all()
+
+	data = {
+    		"labels": ["C", "G", "D", "A", "E", "B", "Gb/F#", "Db", "Ab", "Eb", "Bb", "F"],
+    		"datasets": [
+        	{
+	            "label": None,
+	            "backgroundColor": "rgba(179,181,198,0.2)",
+	            "borderColor": "rgba(179,181,198,1)",
+	            "pointBackgroundColor": "rgba(179,181,198,1)",
+	            "pointBorderColor": "#fff",
+	            "pointHoverBackgroundColor": "#fff",
+	            "pointHoverBorderColor": "rgba(179,181,198,1)",
+	            "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        	},
+        	{
+	            "label": None,
+	            "backgroundColor": "rgba(255,99,132,0.2)",
+	            "borderColor": "rgba(255,99,132,1)",
+	            "pointBackgroundColor": "rgba(255,99,132,1)",
+	            "pointBorderColor": "#fff",
+	            "pointHoverBackgroundColor": "#fff",
+	            "pointHoverBorderColor": "rgba(255,99,132,1)",
+	            "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        	}
+    	]
+	}
+
+	for piece in composer1_pieces:
+		data["datasets"][0]["label"] = piece.composer.name.encode('utf8')
+		if piece.key != None:
+			if piece.key == "Gb" or piece.key == "F#":
+				data["datasets"][0]["data"][6] += 1
+			else:
+				data["datasets"][0]["data"][data["labels"].index(piece.key)] += 1
+
+	for piece in composer2_pieces:
+		data["datasets"][1]["label"] = piece.composer.name.encode('utf8')
+		if piece.key != None:
+			if piece.key == "Gb" or piece.key == "F#":
+				data["datasets"][1]["data"][6] += 1
+			else:
+				data["datasets"][1]["data"][data["labels"].index(piece.key)] += 1
+
+	return jsonify(data)
+
+
 ##############################################################################
 
 if __name__ == "__main__":

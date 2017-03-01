@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Charts{% endblock %}
+
+{% block content %}
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
+
+
+<h1>Charts</h1>
+
+<center><h2>Periods</h2></center>
+  <div class="counts-chart">
+    <canvas id="periodPie"></canvas>
+  </div>
+
+<center><h2>Major Keys</h2></center>
+  <div class="counts-chart">
+    <canvas id="majorkeyPie"></canvas>
+  </div>
+
+<center><h2>Minor Keys</h2></center>
+  <div class="counts-chart">
+    <canvas id="minorkeyPie"></canvas>
+  </div>
+
+<center><h2>Levels</h2></center>
+  <div class="counts-chart">
+    <canvas id="levelPie"></canvas>
+  </div>
+
+<script src="/static/js/charts.js"></script>
+
+ <center><h2>Composer Radar Chart (Major)</h2></center>
+  <div id="radar-select">
+    <center>
+      Composer 1: <select id="composer1-id" class="composer-radar" name="composer">
+          <option selected></option> 
+          {% for composer in composers %}
+          <option value={{ composer[0] }}>
+          {{ composer[1] }} 
+          ({{ composer[2] }} pieces)
+          </option>
+          {% endfor %}
+          </select>
+      Composer 2: <select id="composer2-id" class="composer-radar" name="composer">
+          <option selected></option> 
+          {% for composer in composers %}
+          <option value={{ composer[0] }}>
+          {{ composer[1] }} 
+          ({{ composer[2] }} pieces)
+          </option>
+          {% endfor %}
+          </select><br>
+    </center>
+  </div>
+
+
+  <div class="counts-chart">
+    <canvas id="composerMajorRadar"></canvas>
+  </div>
+
+
+  <script src="/static/js/major-radarchart.js"></script>
+
+
+{% endblock %}
