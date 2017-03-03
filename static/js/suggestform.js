@@ -115,12 +115,13 @@ function showPieces2(results) {
 	var my_piece = results['my_piece']
 	var pieces = results['pieces_query_arr']
 	var filters = results['filters']
+	var count = results['count']
 
 	my_piece_str = create_pieces_results(my_piece)
 	pieces_str = create_pieces_results(pieces)
 
 	$('#my_piece').html("Your piece:<br><br>" + my_piece_str); 
-	$('#filters').html("Similar pieces by filters:<br>" + filters + "<br><br>"); 
+	$('#filters').html(count.toString() + " similar pieces by filters:<br>" + filters + "<br><br>"); 
 	$('#results2').html(pieces_str); 
 
 }

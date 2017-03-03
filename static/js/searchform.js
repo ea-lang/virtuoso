@@ -21,7 +21,8 @@ function getPieces(evt) {
 
 function showPieces(results) {
 	var pieces = results['pieces_query_arr'];
-	var str = '';
+	var count = results['count']
+	var str = count.toString() + ' results<br><br>';
 	
 	for (var i = 0; i < pieces.length; i++) {
 		
