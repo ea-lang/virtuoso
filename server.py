@@ -54,7 +54,7 @@ def get_pieces_by_composer():
 	composer_id = request.args.get("composer_id")
 
 	composer = db.session.query(Composer.name).filter_by(composer_id=composer_id).one()[0]
-	pieces = db.session.query(Piece).filter_by(composer_id=composer_id).all()
+	pieces = db.session.query(Piece).filter_by(composer_id=composer_id).order_by(Piece.title).all()
 
 	pieces_arr = [{"composer": composer}]
 
@@ -355,15 +355,16 @@ def render_menus():
 		options_dict = {}
 	else:
 		if category == "composer": 
-			options = db.session.query(Composer.composer_id, Composer.name, db.func.count(Piece.composer_id)).having(db.func.count(Piece.composer_id) >= 20).group_by(Composer.composer_id, Composer.name).join(Piece).order_by(Composer.name).all()
+			options = db.session.query(Composer.composer_id, Composer.name, db.func.count(Piece.composer_id).filter(Piece.key != None)).having(db.func.count(Piece.composer_id) >= 3).group_by(Composer.composer_id, Composer.name).join(Piece).order_by(Composer.name).all()
 		if category == "period":
-			options = db.session.query(Piece.period, db.func.count(Piece.period)).distinct(Piece.period).having(db.func.count(Piece.period) > 20).filter(Piece.period != None).group_by(Piece.period).order_by(Piece.period).all()
+			options = db.session.query(Piece.period, db.func.count(Piece.period).filter(Piece.key != None)).distinct(Piece.period).having(db.func.count(Piece.period) > 20).filter(Piece.period != None).group_by(Piece.period).order_by(Piece.period).all()
 		if category == "level":
-			options = db.session.query(Piece.level, db.func.count(Piece.level)).distinct(Piece.level).filter(Piece.level != None).group_by(Piece.level).order_by(Piece.level).all()
+			options = db.session.query(Piece.level, db.func.count(Piece.level).filter(Piece.key != None)).distinct(Piece.level).filter(Piece.level != None).group_by(Piece.level).order_by(Piece.level).all()
 
 		if category == "composer":
 			for option in options:
-				options_dict["options"].append({"composer_id": option[0], "name": option[1], "piece_count": option[2]})
+				if option[2] > 5:
+					options_dict["options"].append({"composer_id": option[0], "name": option[1], "piece_count": option[2]})
 		else:
 			for option in options:
 				options_dict["options"].append({"option": option[0], "piece_count": option[1]})
