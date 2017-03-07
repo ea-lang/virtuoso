@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block content %}
-<h1>FIND SIMILAR PIECES</h1>
-Select a composer.<br>
+<center><h1>Find similar pieces</h1>
+Select a composer.<br><br>
 
 <form action="/find-pieces-by-composer"> 
 	Composers: <select id="composer-id" name="composer-id">
@@ -16,7 +16,7 @@ Select a composer.<br>
 		 		</option>
 		 		{% endfor %}
 		 		</select><br><br>	
-</form>
+</form></center>
 
 <div id="results"></div><br>
 

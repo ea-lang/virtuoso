@@ -30,18 +30,18 @@ function showPieces(results) {
 		}
 	}
 
-	results = "Select a piece by " + composer + ".<br>"
+	results = "<center>Select a piece by " + composer + ".<br>"
 				+ "<form action='/suggestion-results'>"
 				+ "Pieces: <select name='piece-id' id='piece-id'>"
 				+ pieces_menu
 				+ "</select><br><br>"
 				+ "Find similar pieces by:<br>"
-				+ "Composer<input type='checkbox' name='composer' id='composer' class='filter'><br>"
-				+ "Period<input type='checkbox' name='period' id='period' class='filter'><br>"
-				+ "Level<input type='checkbox' name='level' id='level' class='filter'><br>"
-				+ "Key<input type='checkbox' name='key' id='key' class='filter'><br>"
-				+ "Tonality<input type='checkbox' name='tonality' id='tonality' class='filter'><br>"
-				+ "</form>";
+				+ "<input type='checkbox' name='composer' id='composer' class='filter'> &nbsp; Composer<br>"
+				+ "<input type='checkbox' name='period' id='period' class='filter'> &nbsp; Period<br>"
+				+ "<input type='checkbox' name='level' id='level' class='filter'> &nbsp; Level<br>"
+				+ "<input type='checkbox' name='key' id='key' class='filter'> &nbsp; Key<br>"
+				+ "<input type='checkbox' name='tonality' id='tonality' class='filter'> &nbsp; Tonality<br>"
+				+ "</form></center>";
 
 	$('#results').html(results); 
 		
@@ -97,14 +97,14 @@ function create_pieces_results(pieces) {
 			}
 
 
-			str += '#' + piece_id + ' <strong>' + title + '</strong>'
-					+ '<ul>' 
-					+ '<li> Composer: ' + composer + '</li>'
-					+ '<li> Period: ' + period + '</li>'
-					+ '<li> Level: ' + level + '</li>'
-					+ '<li> Key: ' + key + '</li>'
-					+ '<li> Tonality: ' + tonality + '</li>'
-					+ '</ul>';
+			str += '#' + piece_id + ' <strong>' + title + '</strong><br>'
+					// + '<ul>' 
+					+ 'Composer: ' + composer + '<br>'
+					+ 'Period: ' + period + '<br>'
+					+ 'Level: ' + level + '<br>'
+					+ 'Key: ' + key + '<br>'
+					+ 'Tonality: ' + tonality + '<br><br>'
+					// + '</ul>';
 	}
 	
 	return str;
@@ -120,9 +120,9 @@ function showPieces2(results) {
 	my_piece_str = create_pieces_results(my_piece)
 	pieces_str = create_pieces_results(pieces)
 
-	$('#my_piece').html("Your piece:<br><br>" + my_piece_str); 
-	$('#filters').html(count.toString() + " similar pieces by filters:<br>" + filters + "<br><br>"); 
-	$('#results2').html(pieces_str); 
+	$('#my_piece').html("<center>Your piece:<br><br>" + my_piece_str + "</center>"); 
+	$('#filters').html("<center>" + count.toString() + " similar pieces by filters:<br>" + filters + "<br><br></center>"); 
+	$('#results2').html("<center>" + pieces_str + "</center>"); 
 
 }
 

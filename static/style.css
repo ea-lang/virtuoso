@@ -1,0 +1,24 @@
+body { 
+    font-family: 'Arapey', serif;
+    background-size: cover;
+    background: url(/static/ricepaper_v3.png) repeat center center;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 2em;
+    font-family: 'Homemade Apple', cursive;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 2em;
+    font-family: 'Homemade Apple', cursive;
+}
+
+.banner-left{
+    position: fixed;
+    left: -410px;
+    bottom:-215px;
+    z-index: -900;
+}
